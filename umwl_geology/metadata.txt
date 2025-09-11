@@ -1,0 +1,8 @@
+[general]
+name=UMWL Geology
+description=TODO
+version=1.0
+qgisMinimumVersion=3.4
+author=Eryk Srebrny
+email=esrebrny@onet.eu
+icon=assets/coat_of_arms.png
