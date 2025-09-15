@@ -6,3 +6,4 @@ qgisMinimumVersion=3.4
 author=Eryk Srebrny
 email=esrebrny@onet.eu
 icon=assets/coat_of_arms.png
+hasProcessingProvider=yes
