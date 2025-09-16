@@ -2,11 +2,17 @@ from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
 
 from umwl_geology.processing_provider.explode_table import ExplodeTableAlgorithm
+from umwl_geology.processing_provider.base_processing_algotrithm import BaseProcessingAlgorithm
 
 class Provider(QgsProcessingProvider):
 
+    def __init__(self):
+        self.algorithms = [
+            ExplodeTableAlgorithm()
+        ]
+
     def loadAlgorithms(self):
-        self.addAlgorithm(ExplodeTableAlgorithm())
+        for algorithm in self.algorithms: self.addAlgorithm(algorithm)
 
     def id(self) -> str:
         return 'umwl_geology'
@@ -16,3 +22,9 @@ class Provider(QgsProcessingProvider):
 
     def icon(self) -> QIcon:
         return QgsProcessingProvider.icon(self)
+
+    def getAlgorithmByName(self, name: str) -> BaseProcessingAlgorithm | None:
+        for algorithm in self.algorithms:
+            if algorithm.name() == name:
+                return algorithm
+        return None
