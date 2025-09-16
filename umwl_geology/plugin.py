@@ -1,4 +1,3 @@
-from umwl_geology.settings import ASSETS_DIR
 from pathlib import Path
 from qgis.pyqt.Widgets import QAction
 from qgis.pyqt.QtGui import QIcon
@@ -8,6 +7,8 @@ from umwl_geology.processing_provider.provider import Provider
 class UMWLGeologyPlugin:
 
     def __init__(self, iface):
+        self.plugin_dir = Path(__file__).resolve().parent
+        self.assets_dir = self.plugin_dir / "assets"
         self.iface = iface
         self.provider = None
         self.cleanup_callbacks = []
@@ -60,7 +61,7 @@ class UMWLGeologyPlugin:
     def initGui(self):
         self.initProcessing()
         self._addPluginAction(
-            ASSETS_DIR / "coat_of_arms.png"
+            self.assets_dir / "coat_of_arms.png"
             'Dummy Action',
             parent = self.iface.mainWindow()
             callback = self._initPluginGUI
