@@ -1,4 +1,5 @@
-from qgis.core import QgsFields, QgsField, QgsFeature, QVariant
+from qgis.PyQt.QtCore import QVariant
+from qgis.core import QgsFields, QgsField, QgsFeature
 from typing import List, Dict, Optional, Union
 
 

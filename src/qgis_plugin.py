@@ -1,7 +1,8 @@
 from pathlib import Path
-from qgis.pyqt.Widgets import QAction
-from qgis.pyqt.QtGui import QIcon
-from umwl_geology.processing_provider.provider import Provider
+from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtGui import QIcon
+from .processing_provider.provider import Provider
+from
 
 
 class UMWLGeologyPlugin:
@@ -63,19 +64,19 @@ class UMWLGeologyPlugin:
         self._addPluginAction(
             self.assets_dir / "coat_of_arms.png"
             'Dummy Action',
-            parent = self.iface.mainWindow()
-            callback = self._initPluginGUI
+            parent = self.iface.mainWindow(),
+            callback = self._initPluginGUI,
         )
 
     def _initPluginGUI(self):
-        # TODO
+        raise NotImplementedError
 
     def unload(self):
         for callback in self.cleanup_callbacks: callback()
         self.cleanup_callbacks.clear()
 
     def getPluginActionToolbar(self):
-        # TODO
+        raise NotImplementedError
 
     def getProcessingProvider(self):
         if self.provider is None:

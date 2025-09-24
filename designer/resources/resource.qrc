@@ -1,0 +1,18 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>globe.svg</file>
+    <file>stack.svg</file>
+    <file>city.svg</file>
+    <file>close.svg</file>
+    <file>cursor.svg</file>
+    <file>edit.svg</file>
+    <file>globe.svg</file>
+    <file>loading.svg</file>
+    <file>options.svg</file>
+    <file>pickaxe.svg</file>
+    <file>process.svg</file>
+    <file>question_mark.svg</file>
+    <file>search.svg</file>
+    <file>download.svg</file>
+  </qresource>
+</RCC>

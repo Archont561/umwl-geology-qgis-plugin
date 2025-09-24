@@ -11,7 +11,7 @@ class BaseProcessingAlgorithmCoreCode(ABC):
         set_progress: callable = None,
         log: callable = None
     ):
-        self.should_cancel = should_cancel or lambda: False
+        self.should_cancel = should_cancel or (lambda: False)
         self.set_progress = set_progress or self._print_progress
         self.log = log or print
 

@@ -11,8 +11,8 @@ from qgis.core import (
     QgsFeatureSink
 )
 from qgis.PyQt.QtCore import QVariant
-from umwl_geology.utils.vectors import copy_layer_schema, create_new_feature
-from umwl_geology.processing_provider.base_processing_algorithm import (
+from ..utils.vectors import copy_layer_schema, create_new_feature
+from .base_processing_algorithm import (
     BaseProcessingAlgorithm,
     BaseProcessingAlgorithmCoreCode
 )
