@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>70</height>
+    <width>292</width>
+    <height>66</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../resources/resource.qrc">
        <normaloff>:/icons/download.svg</normaloff>:/icons/download.svg</iconset>
      </property>
      <property name="iconSize">
@@ -67,7 +67,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../resources/resource.qrc">
        <normaloff>:/icons/search.svg</normaloff>:/icons/search.svg</iconset>
      </property>
      <property name="iconSize">
@@ -99,7 +99,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../resources/resource.qrc">
        <normaloff>:/icons/pickaxe.svg</normaloff>:/icons/pickaxe.svg</iconset>
      </property>
      <property name="iconSize">
@@ -125,7 +125,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../resources/resource.qrc">
        <normaloff>:/icons/stack.svg</normaloff>:/icons/stack.svg</iconset>
      </property>
      <property name="iconSize">
@@ -137,13 +137,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="settingsButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QPushButton" name="csvLoaderButton">
      <property name="maximumSize">
       <size>
        <width>50</width>
@@ -151,14 +145,14 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Plugin settings</string>
+      <string>Load CSV files</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="icon">
-      <iconset>
-       <normaloff>:/icons/options.svg</normaloff>:/icons/options.svg</iconset>
+      <iconset resource="../resources/resource.qrc">
+       <normaloff>:/icons/csv.svg</normaloff>:/icons/csv.svg</iconset>
      </property>
      <property name="iconSize">
       <size>

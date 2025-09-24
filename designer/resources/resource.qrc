@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>csv.svg</file>
     <file>globe.svg</file>
     <file>stack.svg</file>
     <file>city.svg</file>
