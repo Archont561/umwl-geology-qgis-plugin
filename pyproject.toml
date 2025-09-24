@@ -1,10 +1,10 @@
 [general]
-name=UMWL Geology
-description=Plugin for QGIS
-version=0.1
-qgisMinimumVersion=3.40
-author=Eryk Srebrny
-email=esrebrny@onet.eu
+name="UMWL Geology"
+description="Plugin for QGIS"
+version="0.1"
+qgisMinimumVersion="3.40"
+author="Eryk Srebrny"
+email="esrebrny@onet.eu"
 repository="https://github.com/Archont561/umwl-geology-plugin"
 
 [tool.mypy]
