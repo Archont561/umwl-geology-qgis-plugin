@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainToolBox.ui'
+# Form implementation generated from reading ui file 'designer/ui/MainToolBox.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_pluginMainToolbar(object):
     def setupUi(self, pluginMainToolbar):
         pluginMainToolbar.setObjectName("pluginMainToolbar")
-        pluginMainToolbar.resize(300, 70)
+        pluginMainToolbar.resize(292, 66)
         self.horizontalLayout = QtWidgets.QHBoxLayout(pluginMainToolbar)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.uldkParcelDownloaderButton = QtWidgets.QPushButton(pluginMainToolbar)
@@ -68,20 +68,15 @@ class Ui_pluginMainToolbar(object):
         self.basemapToggleButton.setIconSize(QtCore.QSize(40, 40))
         self.basemapToggleButton.setObjectName("basemapToggleButton")
         self.horizontalLayout.addWidget(self.basemapToggleButton)
-        self.settingsButton = QtWidgets.QPushButton(pluginMainToolbar)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.settingsButton.sizePolicy().hasHeightForWidth())
-        self.settingsButton.setSizePolicy(sizePolicy)
-        self.settingsButton.setMaximumSize(QtCore.QSize(50, 50))
-        self.settingsButton.setText("")
+        self.csvLoaderButton = QtWidgets.QPushButton(pluginMainToolbar)
+        self.csvLoaderButton.setMaximumSize(QtCore.QSize(50, 50))
+        self.csvLoaderButton.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/icons/options.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.settingsButton.setIcon(icon4)
-        self.settingsButton.setIconSize(QtCore.QSize(40, 40))
-        self.settingsButton.setObjectName("settingsButton")
-        self.horizontalLayout.addWidget(self.settingsButton)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/csv.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.csvLoaderButton.setIcon(icon4)
+        self.csvLoaderButton.setIconSize(QtCore.QSize(40, 40))
+        self.csvLoaderButton.setObjectName("csvLoaderButton")
+        self.horizontalLayout.addWidget(self.csvLoaderButton)
 
         self.retranslateUi(pluginMainToolbar)
         QtCore.QMetaObject.connectSlotsByName(pluginMainToolbar)
@@ -93,15 +88,5 @@ class Ui_pluginMainToolbar(object):
         self.parcelFinderButton.setToolTip(_translate("pluginMainToolbar", "Find parcel"))
         self.mineralDepositCheckerButton.setToolTip(_translate("pluginMainToolbar", "Check mineral deposit"))
         self.basemapToggleButton.setToolTip(_translate("pluginMainToolbar", "Change basemap"))
-        self.settingsButton.setToolTip(_translate("pluginMainToolbar", "Plugin settings"))
+        self.csvLoaderButton.setToolTip(_translate("pluginMainToolbar", "Load CSV files"))
 import resource_rc
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    pluginMainToolbar = QtWidgets.QWidget()
-    ui = Ui_pluginMainToolbar()
-    ui.setupUi(pluginMainToolbar)
-    pluginMainToolbar.show()
-    sys.exit(app.exec_())
