@@ -1,26 +1,84 @@
 from pathlib import Path
+from qgis.core import QgsApplication
+from qgis.gui import QgisInterface
+from qgis.PyQt.QtCore import QCoreApplication, QTranslator, QSettings, qVersion
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtGui import QIcon
 from .processing_provider.provider import Provider
-from
+
+from . import resources
 
 
 class UMWLGeologyPlugin:
 
-    def __init__(self, iface):
-        self.plugin_dir = Path(__file__).resolve().parent
-        self.assets_dir = self.plugin_dir / "assets"
+    ###################################### CORE ######################################
+
+    def __init__(self, iface: QgisInterface):
+        self._gui_initialized = False
         self.iface = iface
+        self.plugin_dir = Path(__file__).resolve().parent
         self.provider = None
         self.cleanup_callbacks = []
-        self.plugin_menu_name = self.tr(u'&UMWL Geology')
 
-    def tr(self, message):
-        return QCoreApplication.translate('UMWL Geology', message)
+        self._localize()
+        self.plugin_menu_name = f"&{self.tr('UMWL Geology')}"
 
-    def _addPluginAction(self,
-        icon_path,
-        text,
+    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+    def _localize(self):
+        locale = QSettings().value('locale/userLocale')[0:2]
+        locale_path = self.plugin_dir / 'i18n' / f'umwl_geology_{locale}.qm'
+
+        if locale_path.exists():
+            translator = QTranslator()
+            translator.load(locale_path)
+
+            if qVersion() > '4.3.3':
+                QCoreApplication.installTranslator(translator)
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message: str) -> str:
+        """Get the translation for a string using Qt translation API.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate('umwl_geology', message)
+
+    def initProcessing(self):
+        self.provider = Provider()
+        qgs_processing_registry = QgsApplication.processingRegistry()
+        qgs_processing_registry.addProvider(self.provider)
+        self.cleanup_callbacks.append(lambda: qgs_processing_registry.removeProvider(self.provider))
+
+    def initGui(self):
+        if self._gui_initialized:
+            return
+
+        self.initProcessing()
+        self.add_action(
+            self.plugin_dir / "icon.png",
+            self.tr('Start plugin'),
+            parent = self.iface.mainWindow(),
+            callback = self.run,
+        )
+        self._gui_initialized = True
+
+    def unload(self):
+        for callback in self.cleanup_callbacks: callback()
+        self.cleanup_callbacks.clear()
+
+    def run(self):
+        pass
+
+    ###################################### EXTRA ######################################
+
+    def add_action(self,
+        icon_path: Path,
+        text: str,
         callback = None,
         add_to_menu = True,
         add_to_toolbar = True,
@@ -53,32 +111,7 @@ class UMWLGeologyPlugin:
 
         return action
 
-    def initProcessing(self):
-        self.provider = Provider()
-        qgs_processing_registry = QgsApplication.processingRegistry()
-        qgs_processing_registry.addProvider(self.provider)
-        self.cleanup_callbacks.append(lambda: qgs_processing_registry.removeProvider(self.provider))
-
-    def initGui(self):
-        self.initProcessing()
-        self._addPluginAction(
-            self.assets_dir / "coat_of_arms.png"
-            'Dummy Action',
-            parent = self.iface.mainWindow(),
-            callback = self._initPluginGUI,
-        )
-
-    def _initPluginGUI(self):
-        raise NotImplementedError
-
-    def unload(self):
-        for callback in self.cleanup_callbacks: callback()
-        self.cleanup_callbacks.clear()
-
-    def getPluginActionToolbar(self):
-        raise NotImplementedError
-
-    def getProcessingProvider(self):
+    def get_plugin_processing_provider(self):
         if self.provider is None:
             raise ValueError('Plugin processing was not initialized!')
         return self.provider
