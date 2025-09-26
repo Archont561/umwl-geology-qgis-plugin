@@ -32,7 +32,7 @@
       <item>
        <widget class="QLabel" name="voivodeshipComboBoxLabel">
         <property name="text">
-         <string>Pick voivodeship</string>
+         <string>Pick voivodeship:</string>
         </property>
        </widget>
       </item>
@@ -72,7 +72,7 @@
       <item>
        <widget class="QLabel" name="countyComboBoxLabel">
         <property name="text">
-         <string>Pick county</string>
+         <string>Pick county:</string>
         </property>
        </widget>
       </item>
@@ -101,7 +101,7 @@
       <item>
        <widget class="QLabel" name="communeComboBoxLabel">
         <property name="text">
-         <string>Pick commune</string>
+         <string>Pick commune:</string>
         </property>
        </widget>
       </item>
@@ -139,7 +139,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Pick region</string>
+         <string>Pick region:</string>
         </property>
        </widget>
       </item>
@@ -171,7 +171,7 @@
       <item>
        <widget class="QLabel" name="parcelComboBoxLabel">
         <property name="text">
-         <string>Pick parcel</string>
+         <string>Pick parcel:</string>
         </property>
        </widget>
       </item>
@@ -254,6 +254,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>voivodeshipComboBox</tabstop>
+  <tabstop>countyComboBox</tabstop>
+  <tabstop>communeComboBox</tabstop>
+  <tabstop>regionComboBox</tabstop>
+  <tabstop>parcelComboBox</tabstop>
+  <tabstop>parcelZoomButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <slots>

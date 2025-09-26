@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>226</width>
+    <width>273</width>
     <height>82</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Chose csv</string>
+        <string>Pick csv:</string>
        </property>
       </widget>
      </item>
