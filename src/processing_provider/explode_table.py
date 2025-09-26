@@ -41,10 +41,13 @@ class ExplodeTableCode(BaseProcessingAlgorithmCoreCode):
             parts = (part.strip() for part in str(value).split(delimiter)) if value else [None]
 
             for part in parts:
+                new_attrs = {}
+                new_attrs[new_field_name] = part
+
                 exploded_features.append(create_new_feature(
                     feature,
                     new_schema,
-                    attribute_values={[new_field_name]: part}
+                    attribute_values=new_attrs
                 ))
 
             self.set_progress(self.get_progress(i))
