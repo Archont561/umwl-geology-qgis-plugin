@@ -6,6 +6,7 @@ from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtGui import QIcon
 from .processing_provider.provider import Provider
 
+from .widgets import MainToolBox
 from . import resources
 
 
@@ -14,6 +15,7 @@ class UMWLGeologyPlugin:
     ###################################### CORE ######################################
 
     def __init__(self, iface: QgisInterface):
+        self.mainToolBox = None
         self._gui_initialized = False
         self.iface = iface
         self.plugin_dir = Path(__file__).resolve().parent
@@ -63,16 +65,14 @@ class UMWLGeologyPlugin:
             self.plugin_dir / "icon.png",
             self.tr('Start plugin'),
             parent = self.iface.mainWindow(),
-            callback = self.run,
+            callback = self.mainToolBox.show,
         )
+        self.mainToolBox = MainToolBox()
         self._gui_initialized = True
 
     def unload(self):
         for callback in self.cleanup_callbacks: callback()
         self.cleanup_callbacks.clear()
-
-    def run(self):
-        pass
 
     ###################################### EXTRA ######################################
 
@@ -115,3 +115,6 @@ class UMWLGeologyPlugin:
         if self.provider is None:
             raise ValueError('Plugin processing was not initialized!')
         return self.provider
+
+    def get_main_widget(self):
+        return self.mainToolBox
