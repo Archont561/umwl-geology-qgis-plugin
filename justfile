@@ -10,7 +10,7 @@ _:
 PORT := env("PORT", "8000")  # Optional, if used for web tools
 
 # Paths
-export SRC_DIR := "src"
+export SRC_DIR := "umwl_geology"
 export DESIGNER_DIR := "designer"
 export BUILD_DIR := "build"
 
@@ -28,10 +28,8 @@ compile_rc src dest:
 
 # Build plugin
 [group('chore')]
-build:
-    just compile all
-    echo "UI and resources compiled."
-    pb_tool zip
+build output_path='{{ SRC_DIR }}': clean
+    python -c "import shutil; shutil.make_archive('{{ SRC_DIR }}', 'zip', '.', {{ SRC_DIR }}')"
     echo "✅ Build complete"
 
 # Clean compiled and temporary files
