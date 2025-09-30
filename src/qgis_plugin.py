@@ -1,21 +1,28 @@
 from pathlib import Path
+from dataclasses import dataclass
+
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication, QTranslator, QSettings, qVersion
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QMessageBox
 from qgis.PyQt.QtGui import QIcon
-from .processing_provider.provider import Provider
 
-from .widgets import MainToolBox
-from . import resources
+from src.processing_provider.provider import Provider
+from src.widgets.dialogs import QGISLayerPickerDialog, ParcelFinderDialog
 
 
 class UMWLGeologyPlugin:
 
+
+    @dataclass
+    class ActionDialogs:
+        qgisLayerPickerDialog: QGISLayerPickerDialog
+        parcelFinderDialog: ParcelFinderDialog
+
     ###################################### CORE ######################################
 
     def __init__(self, iface: QgisInterface):
-        self.mainToolBox = None
+        self.dialogs: UMWLGeologyPlugin.ActionDialogs | None = None
         self._gui_initialized = False
         self.iface = iface
         self.plugin_dir = Path(__file__).resolve().parent
@@ -65,14 +72,36 @@ class UMWLGeologyPlugin:
             self.plugin_dir / "icon.png",
             self.tr('Start plugin'),
             parent = self.iface.mainWindow(),
-            callback = self.mainToolBox.show,
+            callback = self.run,
         )
-        self.mainToolBox = MainToolBox()
+        self.dialogs = UMWLGeologyPlugin.ActionDialogs(
+            qgisLayerPickerDialog=QGISLayerPickerDialog(parent=self.iface.mainWindow()),
+            parcelFinderDialog=ParcelFinderDialog(parent=self.iface.mainWindow()),
+        )
         self._gui_initialized = True
 
     def unload(self):
         for callback in self.cleanup_callbacks: callback()
         self.cleanup_callbacks.clear()
+
+    def run(self):
+        try:
+            self.dialogs.parcelFinderDialog.exec_()
+
+            polish_administrative_layers = self.dialogs.qgisLayerPickerDialog.get_polish_administrative_layers()
+            if not polish_administrative_layers:
+                QMessageBox.warning(self.iface.mainWindow(), "UMWL Geology", "Failed to load required layers for plugin!")
+
+            QMessageBox.information(self.iface.mainWindow(), "UMWL Geology", f"Loaded required layers")
+
+            self.dialogs.parcelFinderDialog.load_admin_layers(polish_administrative_layers)
+            if not self.dialogs.parcelFinderDialog.exec_():
+                QMessageBox.warning(self.iface.mainWindow(), "UMWL Geology", "Something went wrong during parcel search!")
+
+            QMessageBox.information(self.iface.mainWindow(), "UMWL Geology", f"Closing UMWL Geology plugin!")
+
+        except Exception:
+            QMessageBox.warning(self.iface.mainWindow(), "UMWL Geology", "Exception occurred during UMWL Geology plugin execution!")
 
     ###################################### EXTRA ######################################
 
@@ -115,6 +144,3 @@ class UMWLGeologyPlugin:
         if self.provider is None:
             raise ValueError('Plugin processing was not initialized!')
         return self.provider
-
-    def get_main_widget(self):
-        return self.mainToolBox
