@@ -1,5 +1,6 @@
 from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
+
 from .explode_table import ExplodeTableAlgorithm
 from .base_processing_algorithm import BaseProcessingAlgorithm
 
@@ -7,6 +8,7 @@ from .base_processing_algorithm import BaseProcessingAlgorithm
 class Provider(QgsProcessingProvider):
 
     def __init__(self):
+        super().__init__()
         self.algorithms = [
             ExplodeTableAlgorithm()
         ]

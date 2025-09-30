@@ -1,15 +1,16 @@
-from qgis.core import QgsProcessingAlgorithm
-
-from qgis.PyQt.QtCore import QCoreApplication
 from abc import ABC, abstractmethod
+from typing import Callable
+
+from qgis.core import QgsProcessingAlgorithm
+from qgis.PyQt.QtCore import QCoreApplication
 
 
 class BaseProcessingAlgorithmCoreCode(ABC):
 
     def __init__(self,
-        should_cancel: callable = None,
-        set_progress: callable = None,
-        log: callable = None
+        should_cancel: Callable = None,
+        set_progress: Callable = None,
+        log: Callable = None
     ):
         self.should_cancel = should_cancel or (lambda: False)
         self.set_progress = set_progress or self._print_progress
