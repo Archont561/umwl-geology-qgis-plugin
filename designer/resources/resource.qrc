@@ -16,4 +16,7 @@
     <file>search.svg</file>
     <file>download.svg</file>
   </qresource>
+  <qresource prefix="logo">
+    <file>umwl_coat_of_arms</file>
+  </qresource>
 </RCC>

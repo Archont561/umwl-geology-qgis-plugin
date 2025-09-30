@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>ULDKParcelDownloaderDialog</class>
+ <widget class="QDialog" name="ULDKParcelDownloaderDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>369</width>
-    <height>167</height>
+    <height>155</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout">

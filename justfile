@@ -14,7 +14,6 @@ export SRC_DIR := "src"
 export DESIGNER_DIR := "designer"
 export BUILD_DIR := "build"
 
-
 # Compile .ui file to .py
 [group('chore')]
 compile_ui src dest:
@@ -26,26 +25,6 @@ compile_ui src dest:
 compile_rc src dest:
     echo "Compiling {{ src }} -> {{ dest }}"; \
     python -m PyQt5.pyrcc_main {{ src }} -o {{ dest }}
-
-_compile_all_ui:
-    #!/bin/bash
-    echo "Compiling .ui files..."
-    find $DESIGNER_DIR -name "*.ui" | while read file_path; do
-        stem=$(basename "${file_path%.*}")
-        dest="$SRC_DIR/ui/ui_$stem.py"
-        just compile_ui $file_path $dest
-    done
-    echo "All files compiled successfully to $SRC_DIR/ui"
-
-_compile_all_rc:
-    #!/bin/bash
-    echo "Compiling .qrc files..."
-    find $DESIGNER_DIR -name "*.qrc" | while read file_path; do
-        stem=$(basename "${file_path%.*}")
-        dest="$SRC_DIR/resources/${stem}_rc.py"
-        just compile_rc $file_path $dest
-    done
-    echo "All files compiled successfully to $SRC_DIR/resources"
 
 # Compile all *.ui files and *.qrc files
 [group('chore')]

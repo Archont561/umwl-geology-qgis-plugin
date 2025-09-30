@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>uldkParcelFinderDialog</class>
- <widget class="QDialog" name="uldkParcelFinderDialog">
+ <class>ParcelFinderDialog</class>
+ <widget class="QDialog" name="ParcelFinderDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
