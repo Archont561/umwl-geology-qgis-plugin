@@ -1,4 +1,4 @@
-from typing import Callable, List, Tuple
+from typing import Callable, List, Tuple, Optional
 
 from qgis.PyQt.QtWidgets import QComboBox
 
@@ -9,8 +9,8 @@ ComboboxItemLoader = Callable[[ComboboxItem], List[ComboboxItem]]
 class QLinkedCombobox(QComboBox):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.child_combobox: QComboBox | None = None
-        self.itemset_loader: ComboboxItemLoader | None = None
+        self.child_combobox: Optional[QComboBox] = None
+        self.itemset_loader: Optional[ComboboxItemLoader] = None
 
     def define_itemset_loader(self, itemset_loader: ComboboxItemLoader):
         self.itemset_loader = itemset_loader

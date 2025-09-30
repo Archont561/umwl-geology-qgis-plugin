@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from qgis.core import (
     QgsProcessing,
     QgsProcessingParameterFeatureSource,
@@ -25,7 +27,7 @@ class ExplodeTableCode(BaseProcessingAlgorithmCoreCode):
         super().__init__(*args, **kwargs)
 
     def execute(self,
-        features: list[QgsFeature],
+        features: Iterable[QgsFeature],
         field_name_to_explode: str,
         delimiter: str,
         new_field_name: str,
@@ -41,8 +43,7 @@ class ExplodeTableCode(BaseProcessingAlgorithmCoreCode):
             parts = (part.strip() for part in str(value).split(delimiter)) if value else [None]
 
             for part in parts:
-                new_attrs = {}
-                new_attrs[new_field_name] = part
+                new_attrs = {new_field_name: part}
 
                 exploded_features.append(create_new_feature(
                     feature,
@@ -115,7 +116,7 @@ class ExplodeTableAlgorithm(BaseProcessingAlgorithm):
         # Create new schema for output layer
         new_schema = copy_layer_schema(
             source.fields(),
-            fields_to_remove=[field_name],
+            field_names_to_remove=[field_name],
             fields_to_add=[QgsField(new_field_name, QVariant.String)]
         )
 

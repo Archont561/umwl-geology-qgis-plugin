@@ -1,3 +1,5 @@
+from typing import Optional
+
 from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
 
@@ -25,7 +27,7 @@ class Provider(QgsProcessingProvider):
     def icon(self) -> QIcon:
         return QgsProcessingProvider.icon(self)
 
-    def getAlgorithmByName(self, name: str) -> BaseProcessingAlgorithm | None:
+    def getAlgorithmByName(self, name: str) -> Optional[BaseProcessingAlgorithm]:
         for algorithm in self.algorithms:
             if algorithm.name() == name:
                 return algorithm

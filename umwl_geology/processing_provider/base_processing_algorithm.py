@@ -20,7 +20,7 @@ class BaseProcessingAlgorithmCoreCode(ABC):
     def execute(self, *args, **kwargs):
         pass
 
-    def _print_progress(progress: float):
+    def _print_progress(self, progress: float):
         """ Replacement for the GUI progress bar """
 
         print(f'Progress: {progress:%}')
@@ -34,12 +34,12 @@ class BaseProcessingAlgorithm(QgsProcessingAlgorithm):
     INPUT = 'INPUT'
     OUTPUT = 'OUTPUT'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         if self.NAME is None:
             raise ValueError(f"No name set for {self.__class__.name}!")
         if self.GROUP_NAME is None:
             raise ValueError(f"No group name set for {self.__class__.name}!")
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)

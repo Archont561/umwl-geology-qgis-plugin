@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Optional
 from contextlib import contextmanager
 
 from qgis.core import (
@@ -99,7 +99,7 @@ def get_or_create_layer_group(group_name: str) -> QgsLayerTreeGroup:
     return group
 
 
-def add_layer_to_group(layer: QgsMapLayer, group: QgsLayerTreeGroup) -> QgsLayerTreeLayer | None:
+def add_layer_to_group(layer: QgsMapLayer, group: QgsLayerTreeGroup) -> Optional[QgsLayerTreeLayer]:
     QgsProject.instance().addMapLayer(layer, False)
     return group.addLayer(layer)
 

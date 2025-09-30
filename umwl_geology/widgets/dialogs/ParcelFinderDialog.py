@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Optional
 
 from qgis.PyQt.QtWidgets import QDialog, QComboBox
 from qgis.PyQt.QtCore import pyqtSignal
@@ -7,7 +7,7 @@ from qgis.PyQt.QtCore import pyqtSignal
 from umwl_geology.utils import iface
 from umwl_geology.constants import PolishAdministrativeLayers, AdministrativeLayer
 from umwl_geology.widgets.dialogs.ui_ParcelFinderDialog import Ui_ParcelFinderDialog
-from umwl_geology.widgets.custom.QLinkedCombobox import QLinkedCombobox, ComboboxItem, ComboboxItemLoader
+from umwl_geology.widgets.custom.QLinkedCombobox import ComboboxItem, ComboboxItemLoader
 
 
 class ParcelFinderDialog(QDialog):
@@ -18,8 +18,8 @@ class ParcelFinderDialog(QDialog):
         super().__init__(parent)
         self.ui = Ui_ParcelFinderDialog()
         self.ui.setupUi(self)
-        self._current_parcel_teryt: str | None = None
-        self._polish_administrative_layers: PolishAdministrativeLayers | None = None
+        self._current_parcel_teryt: Optional[str]= None
+        self._polish_administrative_layers: Optional[PolishAdministrativeLayers] = None
 
         self.ui.voivodeshipComboBox.set_child(self.ui.countyComboBox)
         self.ui.countyComboBox.set_child(self.ui.communeComboBox)
@@ -61,7 +61,7 @@ class ParcelFinderDialog(QDialog):
         self._current_parcel_teryt = self.ui.parcelComboBox.currentData()
         self._enable_zoom_button()
 
-    def _refresh_comboboxes(self, combobox: QLinkedCombobox | QComboBox):
+    def _refresh_comboboxes(self, combobox: QComboBox):
         self._disable_zoom_button()
         current_combobox = combobox
         while current_combobox:
