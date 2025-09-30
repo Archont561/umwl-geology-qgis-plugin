@@ -26,10 +26,6 @@ compile_rc src dest:
     echo "Compiling {{ src }} -> {{ dest }}"; \
     python -m PyQt5.pyrcc_main {{ src }} -o {{ dest }}
 
-# Compile all *.ui files and *.qrc files
-[group('chore')]
-compile: _compile_all_ui _compile_all_rc
-
 # Build plugin
 [group('chore')]
 build:
