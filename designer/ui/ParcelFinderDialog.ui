@@ -22,6 +22,9 @@
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
     <widget class="QFrame" name="voivodeshipGroup">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -50,11 +53,6 @@
         <property name="frame">
          <bool>true</bool>
         </property>
-        <item>
-         <property name="text">
-          <string>Lubelskie</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
@@ -78,6 +76,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="countyComboBox">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="toolTip">
          <string notr="true"/>
         </property>
@@ -232,7 +233,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Zoom to parcel</string>
+         <string>Zoom</string>
         </property>
        </widget>
       </item>
