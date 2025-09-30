@@ -26,6 +26,7 @@ def run_in_project(main: Callable[[], None]):
     qgs = QgsApplication([], False)
     qgs.initQgis()
 
+    print(project_path)
     if not QgsProject.instance().read(project_path):
         raise QGISProjectNotFoundError('Failed to load qgis project')
 
