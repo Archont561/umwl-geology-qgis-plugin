@@ -12,7 +12,7 @@ from qgis.core import (
 from qgis.PyQt.QtCore import QVariant
 
 from src.utils.management import copy_layer_schema, create_new_feature
-from .base_processing_algorithm import (
+from src.processing_provider.base_processing_algorithm import (
     BaseProcessingAlgorithm,
     BaseProcessingAlgorithmCoreCode
 )

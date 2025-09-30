@@ -1,8 +1,8 @@
 from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
 
-from .explode_table import ExplodeTableAlgorithm
-from .base_processing_algorithm import BaseProcessingAlgorithm
+from src.processing_provider.explode_table import ExplodeTableAlgorithm
+from src.processing_provider.base_processing_algorithm import BaseProcessingAlgorithm
 
 
 class Provider(QgsProcessingProvider):
