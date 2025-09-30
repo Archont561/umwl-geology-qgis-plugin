@@ -1,6 +1,19 @@
-from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsFields, QgsField, QgsFeature
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Union
+from contextlib import contextmanager
+
+from qgis.core import (
+    QgsProject,
+    QgsLayerTreeGroup,
+    QgsMapLayer,
+    QgsLayerTreeLayer,
+    QgsVectorLayer,
+    QgsCoordinateTransform,
+    QgsFields,
+    QgsField,
+    QgsFeature,
+)
+
+from src.exceptions import QGISEditingError
 
 
 def copy_layer_schema(
@@ -34,6 +47,14 @@ def copy_layer_schema(
     return new_fields
 
 
+def get_feature_attribute(feature: QgsFeature, field_name: str):
+    idx = feature.fields().indexFromName(field_name)
+    if idx != -1:
+        return feature[idx]
+    else:
+        return None
+
+
 def create_new_feature(
     feature: QgsFeature,
     schema: QgsFields,
@@ -51,11 +72,6 @@ def create_new_feature(
     """
     new_feat = QgsFeature(schema)
     new_feat.setGeometry(feature.geometry())
-
-    get_feature_attribute = (
-        lambda fields:
-            lambda name: feature[(idx := fields.indexFromName(name))] if idx != -1 else None
-    )(feature.fields())
     attribute_values = attribute_values or {}
     attrs = []
 
@@ -73,3 +89,55 @@ def create_new_feature(
 
     new_feat.setAttributes(attrs)
     return new_feat
+
+
+def get_or_create_layer_group(group_name: str) -> QgsLayerTreeGroup:
+    root = QgsProject.instance().layerTreeRoot()
+    group = root.findGroup(group_name)
+    if not group:
+        group = root.addGroup(group_name)
+    return group
+
+
+def add_layer_to_group(layer: QgsMapLayer, group: QgsLayerTreeGroup) -> QgsLayerTreeLayer | None:
+    QgsProject.instance().addMapLayer(layer, False)
+    return group.addLayer(layer)
+
+
+def update_layer(source: QgsVectorLayer, target: QgsVectorLayer) -> int:
+    transformer = QgsCoordinateTransform(
+        source.crs(),
+        target.crs(),
+        QgsProject.instance(),
+    )
+
+    with edit_layer(target) as layer:
+        features_to_append = []
+        for feature in source.getFeatures():
+            new_feature = QgsFeature(feature)
+            new_feature.geometry().transform(transformer)
+            features_to_append.append(new_feature)
+        layer.addFeatures(features_to_append)
+
+    return len(features_to_append)
+
+
+@contextmanager
+def edit_layer(layer: QgsVectorLayer):
+    """
+    Custom context manager to safely edit a QgsVectorLayer.
+    Ensures changes are committed on success, rolled back on error.
+    """
+    if not layer.isEditable():
+        layer.startEditing()
+
+    try:
+        yield layer
+        if layer.isEditable():
+            success = layer.commitChanges()
+            if not success:
+                layer.rollBack()
+                raise QGISEditingError(layer)
+    finally:
+        if layer.isEditable():
+            layer.rollBack()
