@@ -7,8 +7,8 @@ from qgis.PyQt.QtCore import QCoreApplication, QTranslator, QSettings, qVersion
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
 from qgis.PyQt.QtGui import QIcon
 
-from src.processing_provider.provider import Provider
-from src.widgets.dialogs import QGISLayerPickerDialog, ParcelFinderDialog
+from umwl_geology.processing_provider.provider import Provider
+from umwl_geology.widgets.dialogs import QGISLayerPickerDialog, ParcelFinderDialog
 
 
 class UMWLGeologyPlugin:

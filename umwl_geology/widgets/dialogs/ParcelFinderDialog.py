@@ -4,10 +4,10 @@ from typing import List
 from qgis.PyQt.QtWidgets import QDialog, QComboBox
 from qgis.PyQt.QtCore import pyqtSignal
 
-from src.utils import iface
-from src.constants import PolishAdministrativeLayers, AdministrativeLayer
-from src.widgets.dialogs.ui_ParcelFinderDialog import Ui_ParcelFinderDialog
-from src.widgets.custom.QLinkedCombobox import QLinkedCombobox, ComboboxItem, ComboboxItemLoader
+from umwl_geology.utils import iface
+from umwl_geology.constants import PolishAdministrativeLayers, AdministrativeLayer
+from umwl_geology.widgets.dialogs.ui_ParcelFinderDialog import Ui_ParcelFinderDialog
+from umwl_geology.widgets.custom.QLinkedCombobox import QLinkedCombobox, ComboboxItem, ComboboxItemLoader
 
 
 class ParcelFinderDialog(QDialog):
@@ -99,5 +99,5 @@ def main():
 
 
 if __name__ == '__main__':
-    from src.utils import run_in_project
+    from umwl_geology.utils import run_in_project
     run_in_project(main)

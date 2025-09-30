@@ -15,7 +15,7 @@ iface: QgisInterface = iface
 def run_in_project(main: Callable[[], None]):
     import os
     from qgis.core import QgsApplication, QgsProject
-    from src.exceptions import QGISProjectNotFoundError
+    from umwl_geology.exceptions import QGISProjectNotFoundError
 
     qgis_path = os.getenv('QGIS_PATH')
     project_path = os.getenv('PROJECT_PATH')

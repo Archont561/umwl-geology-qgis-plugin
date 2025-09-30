@@ -13,7 +13,7 @@ from qgis.core import (
     QgsFeature,
 )
 
-from src.exceptions import QGISEditingError
+from umwl_geology.exceptions import QGISEditingError
 
 
 def copy_layer_schema(

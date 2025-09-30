@@ -3,8 +3,8 @@ from typing import List
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox
 from qgis.PyQt.QtCore import pyqtSignal
 
-from src.widgets.dialogs.ui_QGISLayerPickerDialog import Ui_QGISLayerPicker
-from src.constants import PolishAdministrativeLayers, AdministrativeLayer
+from umwl_geology.widgets.dialogs.ui_QGISLayerPickerDialog import Ui_QGISLayerPicker
+from umwl_geology.constants import PolishAdministrativeLayers, AdministrativeLayer
 
 
 class QGISLayerPickerDialog(QDialog):
@@ -66,5 +66,5 @@ def main():
 
 
 if __name__ == '__main__':
-    from src.utils import run_in_project
+    from umwl_geology.utils import run_in_project
     run_in_project(main)
