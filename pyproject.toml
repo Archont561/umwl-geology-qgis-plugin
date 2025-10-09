@@ -1,11 +1,129 @@
-[general]
-name="UMWL Geology"
-description="Plugin for QGIS"
-version="0.1"
-qgisMinimumVersion="3.40"
-author="Eryk Srebrny"
-email="esrebrny@onet.eu"
-repository="https://github.com/Archont561/umwl-geology-plugin"
+# ==============================================================================
+# Project Metadata (PEP 621)
+# ==============================================================================
+[project]
+name = "umwl-geology-qgis-plugin"
+version = "0.1.0"
+description = "A QGIS plugin for UMWL Geology"
+
+# ==============================================================================
+# Pixi Configuration (must be under [tool.pixi] in pyproject.toml)
+# ==============================================================================
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64", "win-64"]
+
+[tool.pixi.dependencies]
+python = ">=3.9,<3.12"
+qgis = ">=3.28"
+
+# ------------------------------------------------------------------------------
+# Test Feature
+# ------------------------------------------------------------------------------
+[tool.pixi.feature.test.dependencies]
+pytest = ">=8.4.2"
+coverage = ">=7.0"
+
+[tool.pixi.feature.test.pypi-dependencies]
+pytest-qgis = ">=2.1.0"
+
+# ------------------------------------------------------------------------------
+# Static Analysis Feature
+# ------------------------------------------------------------------------------
+[tool.pixi.feature.static-analysis.dependencies]
+black = ">=23.0"
+flake8 = ">=6.0"
+mypy = ">=1.0"
+isort = ">=5.0"
+
+[tool.pixi.feature.static-analysis.pypi-dependencies]
+flake8-qgis = ">=1.1.0"
+qgis-stubs = ">=0.2.0"
+PyQt5-stubs = ">=5.15.6"
+
+# ------------------------------------------------------------------------------
+# Dev Feature
+# ------------------------------------------------------------------------------
+[tool.pixi.feature.dev.dependencies]
+# Add dev-specific dependencies here if needed
+
+# ------------------------------------------------------------------------------
+# Environments
+# ------------------------------------------------------------------------------
+[tool.pixi.environments]
+dev = ["static-analysis", "test", "dev"]
+test = ["static-analysis", "test"]
+
+# ==============================================================================
+# Tasks - Plugin Management
+# ==============================================================================
+[tool.pixi.tasks."plugin:link"]
+description = "Create a symbolic link from the QGIS plugins directory to the source code for live development."
+cmd = ["python", "./scripts/link_plugin.py", "umwl_geology"]
+
+[tool.pixi.tasks."plugin:zip"]
+description = "Package the plugin source into a .zip file for distribution."
+cmd = ["python", "./scripts/zip_plugin.py", "umwl_geology"]
+depends-on = ["plugin:clean"]
+
+[tool.pixi.tasks."plugin:clean"]
+description = "Clean compiled files, caches, and the packaged .zip file."
+cmd = ["python", "./scripts/clean_plugin.py", "umwl_geology"]
+
+# ==============================================================================
+# Tasks - Testing & Code Quality
+# ==============================================================================
+[tool.pixi.tasks."test:coverage"]
+description = "Run tests with coverage and fail if below 80%."
+cmd = "coverage run -m pytest && coverage report --fail-under=80"
+
+[tool.pixi.tasks."clean-code:format"]
+description = "Format code with isort and black."
+cmd = "isort . && black ."
+
+[tool.pixi.tasks."clean-code:lint"]
+description = "Lint code with flake8."
+cmd = "flake8 --count --show-source --statistics"
+
+[tool.pixi.tasks."clean-code:type-check"]
+description = "Check types with mypy."
+cmd = "mypy"
+
+[tool.pixi.tasks."clean-code:check-all"]
+description = "Run all static analysis checks in read-only mode."
+cmd = "isort . --check-only && black . --check && flake8 --count --show-source --statistics && mypy"
+
+# ==============================================================================
+# Tool Configurations (other tools)
+# ==============================================================================
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311']
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = "E203, W503"
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -14,7 +132,10 @@ warn_redundant_casts = true
 no_implicit_optional = true
 strict_optional = true
 files = ["src", "tests"]
-exclude = [
-    "stubs",
-    ".*\\.pyi$"
-]
+exclude = ["stubs", ".*\\.pyi$"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "pep621"
