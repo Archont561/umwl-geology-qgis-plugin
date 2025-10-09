@@ -3,12 +3,12 @@ from dataclasses import dataclass
 
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
-from qgis.PyQt.QtCore import QCoreApplication, QTranslator, QSettings, qVersion
-from qgis.PyQt.QtWidgets import QAction, QMessageBox
-from qgis.PyQt.QtGui import QIcon
+from PyQt5.QtCore import QCoreApplication, QTranslator, QSettings, qVersion
+from PyQt5.QtWidgets import QAction, QMessageBox
+from PyQt5.QtGui import QIcon
 
-from umwl_geology.processing_provider.provider import Provider
-from umwl_geology.widgets.dialogs import QGISLayerPickerDialog, ParcelFinderDialog
+from .provider import Provider
+from .widgets.dialogs import QGISLayerPickerDialog, ParcelFinderDialog
 
 
 class UMWLGeologyPlugin:

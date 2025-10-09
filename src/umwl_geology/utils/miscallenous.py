@@ -1,21 +1,14 @@
 from typing import Callable
 
-from qgis.gui import QgisInterface
-from qgis.utils import iface
-
 __all__ = [
-    "iface",
     "run_in_project"
 ]
-
-# noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-iface: QgisInterface = iface
 
 
 def run_in_project(main: Callable[[], None]):
     import os
     from qgis.core import QgsApplication, QgsProject
-    from umwl_geology.exceptions import QGISProjectNotFoundError
+    from ..exceptions import QGISProjectNotFoundError
 
     qgis_path = os.getenv('QGIS_PATH')
     project_path = os.getenv('PROJECT_PATH')

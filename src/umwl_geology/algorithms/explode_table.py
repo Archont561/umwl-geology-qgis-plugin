@@ -11,20 +11,17 @@ from qgis.core import (
     QgsFields,
     QgsFeatureSink
 )
-from qgis.PyQt.QtCore import QVariant
+from PyQt5.QtCore import QVariant
 
-from umwl_geology.utils.management import copy_layer_schema, create_new_feature
-from umwl_geology.processing_provider.base_processing_algorithm import (
-    BaseProcessingAlgorithm,
-    BaseProcessingAlgorithmCoreCode
-)
+from ..utils.management import copy_layer_schema, create_new_feature
+from ..utils.algorithms import BaseProcessingAlgorithm, BaseProcessingAlgorithmCoreCode
 
 
 class ExplodeTableCode(BaseProcessingAlgorithmCoreCode):
 
     def __init__(self, get_progress, *args, **kwargs):
         self.get_progress = get_progress
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs) # noqa
 
     def execute(self,
         features: Iterable[QgsFeature],

@@ -1,10 +1,10 @@
 from typing import Optional
 
 from qgis.core import QgsProcessingProvider
-from qgis.PyQt.QtGui import QIcon
+from PyQt5.QtGui import QIcon
 
-from umwl_geology.processing_provider.explode_table import ExplodeTableAlgorithm
-from umwl_geology.processing_provider.base_processing_algorithm import BaseProcessingAlgorithm
+from .algorithms import ExplodeTableAlgorithm
+from .utils.algorithms import BaseProcessingAlgorithm
 
 
 class Provider(QgsProcessingProvider):

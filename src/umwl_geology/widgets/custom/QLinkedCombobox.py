@@ -1,6 +1,6 @@
 from typing import Callable, List, Tuple, Optional
 
-from qgis.PyQt.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QComboBox
 
 ComboboxItem = Tuple[str, any]
 ComboboxItemLoader = Callable[[ComboboxItem], List[ComboboxItem]]
@@ -17,7 +17,7 @@ class QLinkedCombobox(QComboBox):
 
     def set_child(self, child_combo):
         try:
-            self.currentIndexChanged.disconnect()
+            self.currentIndexChanged.discodnnect()
         except TypeError:
             pass
         self.itemset_loader = None

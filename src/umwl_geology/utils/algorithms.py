@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Callable
 
 from qgis.core import QgsProcessingAlgorithm
-from qgis.PyQt.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication
 
 
 class BaseProcessingAlgorithmCoreCode(ABC):

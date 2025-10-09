@@ -1,5 +1,5 @@
-from qgis.PyQt import QtCore, QtGui, QtWidgets
-from umwl_geology.widgets.custom.QLinkedCombobox import QLinkedCombobox
+from PyQt5 import QtCore, QtGui, QtWidgets
+from ...widgets.custom.QLinkedCombobox import QLinkedCombobox
 
 
 class Ui_ParcelFinderDialog:

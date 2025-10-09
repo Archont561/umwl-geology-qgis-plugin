@@ -1,13 +1,12 @@
 from __future__ import annotations
 from typing import List, Optional
 
-from qgis.PyQt.QtWidgets import QDialog, QComboBox
-from qgis.PyQt.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QDialog, QComboBox
+from PyQt5.QtCore import pyqtSignal
 
-from umwl_geology.utils import iface
-from umwl_geology.constants import PolishAdministrativeLayers, AdministrativeLayer
-from umwl_geology.widgets.dialogs.ui_ParcelFinderDialog import Ui_ParcelFinderDialog
-from umwl_geology.widgets.custom.QLinkedCombobox import ComboboxItem, ComboboxItemLoader
+from ...constants import PolishAdministrativeLayers, AdministrativeLayer
+from ...widgets.dialogs.ui_ParcelFinderDialog import Ui_ParcelFinderDialog
+from ...widgets.custom.QLinkedCombobox import ComboboxItem, ComboboxItemLoader
 
 
 class ParcelFinderDialog(QDialog):
@@ -80,7 +79,7 @@ class ParcelFinderDialog(QDialog):
     def _search_parcel(self):
         parcel_layer = self._polish_administrative_layers.Parcel
         parcel_layer.select_by_teryt(self._current_parcel_teryt)
-        iface.mapCanvas().zoomToSelected(parcel_layer.vector_layer)
+        # iface.mapCanvas().zoomToSelected(parcel_layer.vector_layer)
 
     # ------------ API ---------------
 
@@ -99,5 +98,5 @@ def main():
 
 
 if __name__ == '__main__':
-    from umwl_geology.utils import run_in_project
+    from ...utils.miscallenous import run_in_project
     run_in_project(main)
