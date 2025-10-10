@@ -8,5 +8,5 @@ class Provider(ProcessingProvider):
             ExplodeTableAlgorithm()
         ],
         "ID": "umwl_geology",
-        "Name": "UMWL Geology",
+        "NAME": "UMWL Geology",
     }
