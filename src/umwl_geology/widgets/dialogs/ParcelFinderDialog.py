@@ -40,7 +40,7 @@ class ParcelFinderDialog(QDialog):
             combobox_items = []
             for feature in layer.vector_layer.getSelectedFeatures():
                 teryt = feature.attribute(layer.teryt_field)
-                name = feature.attribute(layer.teryt_field)
+                name = feature.attribute(layer.name_field)
                 combobox_items.append((f'{teryt}| {name}', teryt))
             return combobox_items
 
@@ -53,6 +53,9 @@ class ParcelFinderDialog(QDialog):
             teryt = feature.attribute(voivodeship.teryt_field)
             name = feature.attribute(voivodeship.teryt_field)
             self.ui.voivodeshipComboBox.addItem(f'{teryt}| {name}', teryt)
+
+        if self.ui.voivodeshipComboBox.count() > 0:
+            self.ui.voivodeshipComboBox.setCurrentIndex(0)
 
     def _on_parcel_combobox_index_change(self):
         self._current_parcel_teryt = self.ui.parcelComboBox.currentData()
