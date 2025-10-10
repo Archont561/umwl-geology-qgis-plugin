@@ -5,7 +5,6 @@ import re
 
 from qgis.core import QgsVectorLayer
 
-
 class PolishAdministrativeLayers:
     Voivodeship: AdministrativeLayer
     County: AdministrativeLayer
@@ -38,8 +37,3 @@ class AdministrativeLayer:
         except re.error:
             # In case regex is malformed
             return False
-
-    def select_by_teryt(self, teryt: str):
-        if not self.__class__.validate_teryt(self, teryt):
-            raise ValueError(f"'{teryt}' is not a valid teryt!")
-        self.vector_layer.selectByExpression(f"'{self.teryt_field}' = '{teryt}'")
