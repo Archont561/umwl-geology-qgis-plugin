@@ -17,7 +17,7 @@ class QLinkedCombobox(QComboBox):
 
     def set_child(self, child_combo):
         try:
-            self.currentIndexChanged.discodnnect()
+            self.currentIndexChanged.disconnect()
         except TypeError:
             pass
         self.itemset_loader = None
