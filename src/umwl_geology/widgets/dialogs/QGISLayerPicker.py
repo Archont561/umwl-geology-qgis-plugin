@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from PyQt5.QtWidgets import QDialog, QMessageBox
 from PyQt5.QtCore import pyqtSignal
@@ -16,7 +16,7 @@ class QGISLayerPickerDialog(QDialog):
         self.ui = Ui_QGISLayerPicker()
         self.ui.setupUi(self)
 
-        self._polish_administrative_layers: PolishAdministrativeLayers | None = None
+        self._polish_administrative_layers: Optional[PolishAdministrativeLayers] = None
 
         self.ui.voivodeshipNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.countyTab.setEnabled(True))
         self.ui.countyNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.communeTab.setEnabled(True))
@@ -60,11 +60,9 @@ class QGISLayerPickerDialog(QDialog):
         return self._polish_administrative_layers
 
 
-def main():
-    dialog = QGISLayerPickerDialog()
-    dialog.exec_()
-
-
 if __name__ == '__main__':
-    from ...utils import run_in_project
-    run_in_project(main)
+    from ...utils.miscallenous import QGISEnvironment
+
+    with QGISEnvironment():
+        dialog = QGISLayerPickerDialog()
+        dialog.exec_()
