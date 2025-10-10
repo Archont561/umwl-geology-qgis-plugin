@@ -18,11 +18,13 @@ class QLinkedCombobox(QComboBox):
     def set_child(self, child_combo):
         try:
             self.currentIndexChanged.disconnect()
+            self.activated.disconnect()
         except TypeError:
             pass
         self.itemset_loader = None
         self.child_combobox = child_combo
         self.currentIndexChanged.connect(self._handle_index_change)
+        self.activated.connect(self._handle_index_change)
 
     def _handle_index_change(self):
         if self.itemset_loader is None or self.child_combobox is None:
