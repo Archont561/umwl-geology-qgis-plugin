@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from qgis.gui import QgsFieldComboBox, QgsMapLayerComboBox
 from PyQt5.QtWidgets import QDialog, QMessageBox
 from PyQt5.QtCore import pyqtSignal
 
@@ -18,12 +19,42 @@ class QGISLayerPickerDialog(QDialog):
 
         self._polish_administrative_layers: Optional[PolishAdministrativeLayers] = None
 
+        self.ui.voivodeshipMapLayerComboBox.layerChanged.connect(self._map_layer_combobox_layer_changed_handler_factory(
+            combobox=self.ui.voivodeshipMapLayerComboBox,
+            field_comboboxes=[self.ui.voivodeshipNameFieldComboBox, self.ui.voivodeshipTerytFieldComboBox]
+        ))
+        self.ui.countyMapLayerComboBox.layerChanged.connect(self._map_layer_combobox_layer_changed_handler_factory(
+            combobox=self.ui.countyMapLayerComboBox,
+            field_comboboxes=[self.ui.countyNameFieldComboBox, self.ui.countyTerytFieldComboBox]
+        ))
+        self.ui.communeMapLayerComboBox.layerChanged.connect(self._map_layer_combobox_layer_changed_handler_factory(
+            combobox=self.ui.communeMapLayerComboBox,
+            field_comboboxes=[self.ui.communeNameFieldComboBox, self.ui.communeTerytFieldComboBox]
+        ))
+        self.ui.regionMapLayerComboBox.layerChanged.connect(self._map_layer_combobox_layer_changed_handler_factory(
+            combobox=self.ui.regionMapLayerComboBox,
+            field_comboboxes=[self.ui.regionNameFieldComboBox, self.ui.regionTerytFieldComboBox]
+        ))
+        self.ui.parcelMapLayerComboBox.layerChanged.connect(self._map_layer_combobox_layer_changed_handler_factory(
+            combobox=self.ui.parcelMapLayerComboBox,
+            field_comboboxes=[self.ui.parcelNameFieldComboBox, self.ui.parcelTerytFieldComboBox]
+        ))
+
         self.ui.voivodeshipNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.countyTab.setEnabled(True))
         self.ui.countyNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.communeTab.setEnabled(True))
         self.ui.communeNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.regionTab.setEnabled(True))
         self.ui.regionNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.parcelTab.setEnabled(True))
         self.ui.parcelNameFieldComboBox.currentIndexChanged.connect(lambda: self.ui.confirmButton.setEnabled(True))
         self.ui.confirmButton.clicked.connect(self._perform_check)
+
+    @staticmethod
+    def _map_layer_combobox_layer_changed_handler_factory(combobox: QgsMapLayerComboBox, field_comboboxes: List[QgsFieldComboBox]):
+        def handler():
+            for field_combobox in field_comboboxes:
+                field_combobox.setLayer(combobox.currentLayer())
+
+        return handler
+
 
     def _perform_check(self):
         polish_administrative_layers = PolishAdministrativeLayers()
@@ -50,6 +81,7 @@ class QGISLayerPickerDialog(QDialog):
         if flag:
             self._polish_administrative_layers = polish_administrative_layers
             self.layers_picked.emit(polish_administrative_layers)
+            self.accept()
         else:
             QMessageBox.critical(self, "Error", "Please select all required layers and fields.")
 
