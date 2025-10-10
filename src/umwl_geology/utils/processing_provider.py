@@ -1,9 +1,11 @@
+from typing import Union, Dict, Any
+
 from qgis.core import QgsProcessingProvider
 from PyQt5.QtGui import QIcon
 
 
 class ProcessingProvider(QgsProcessingProvider):
-    UNIQUE_PROVIDER_CONFIGURATION = {
+    UNIQUE_PROVIDER_CONFIGURATION: Dict[str, Any] = {
         "ALGORITHMS": [],
         "ID": None,
         "NAME": None,
@@ -14,7 +16,7 @@ class ProcessingProvider(QgsProcessingProvider):
         for algorithm in self.UNIQUE_PROVIDER_CONFIGURATION["ALGORITHMS"]: self.addAlgorithm(algorithm)
 
     def id(self) -> str:
-        unique_id =  self.UNIQUE_PROVIDER_CONFIGURATION.get("ID", None)
+        unique_id: Union[str, None] =  self.UNIQUE_PROVIDER_CONFIGURATION.get("ID", None)
         if unique_id:
             return unique_id
 
@@ -28,4 +30,4 @@ class ProcessingProvider(QgsProcessingProvider):
         return self.tr(self.UNIQUE_PROVIDER_CONFIGURATION.get("NAME", "Unknown Provider"))
 
     def icon(self) -> QIcon:
-        return self.UNIQUE_PROVIDER_CONFIGURATION["ICON"] or QgsProcessingProvider.icon(self)
+        return self.UNIQUE_PROVIDER_CONFIGURATION.get("ICON", QgsProcessingProvider.icon(self))

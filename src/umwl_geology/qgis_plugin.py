@@ -31,7 +31,7 @@ class UMWLGeologyPlugin(QGISPlugin):
     def init_gui(self):
         self.dialogs = UMWLGeologyPluginActionDialogs(
             qgisLayerPickerDialog=QGISLayerPickerDialog(parent=self.iface.mainWindow()),
-            parcelFinderDialog=ParcelFinderDialog(parent=self.iface.mainWindow()),
+            parcelFinderDialog=ParcelFinderDialog(parent=self.iface.mainWindow(), iface=self.iface),
         )
         self.add_action(
             icon_path=self.PLUGIN_DIR / "icon.png",

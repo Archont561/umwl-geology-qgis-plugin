@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, List
 
 from qgis.core import (
     QgsProcessing,
@@ -29,7 +29,7 @@ class ExplodeTableCode(BaseProcessingAlgorithmCoreCode):
         delimiter: str,
         new_field_name: str,
         new_schema: QgsFields,
-    ) -> list[QgsFeature]:
+    ) -> List[QgsFeature]:
         exploded_features = []
 
         for i, feature in enumerate(features, start=1):
