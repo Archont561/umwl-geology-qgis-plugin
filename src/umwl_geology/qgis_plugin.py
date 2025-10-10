@@ -34,12 +34,14 @@ class UMWLGeologyPlugin(QGISPlugin):
             parcelFinderDialog=ParcelFinderDialog(parent=self.iface.mainWindow()),
         )
         self.add_action(
-            self.tr('Set plugin settings'),
+            icon_path=self.PLUGIN_DIR / "icon.png",
+            text=self.tr('Set plugin settings'),
             add_to_toolbar=False,
             callback = self._handle_settings,
         )
         self.add_action(
-            self.tr('Open parcel finder dialog'),
+            icon_path=self.PLUGIN_DIR / "icon.png",
+            text=self.tr('Open parcel finder dialog'),
             add_to_toolbar=False,
             callback = self._handle_parcel_search,
         )
