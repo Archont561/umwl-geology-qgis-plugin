@@ -36,7 +36,8 @@ class ParcelFinderDialog(QDialog):
     def _itemset_loader_factory(layer: AdministrativeLayer) -> ComboboxItemLoader:
         def itemset_loader(dataset: ComboboxItem) -> List[ComboboxItem]:
             _, teryt = dataset
-            layer.select_by_teryt(teryt)
+            expression = f'"{layer.teryt_field}" LIKE \'{teryt}%\''
+            layer.vector_layer.selectByExpression(expression)
             combobox_items = []
             for feature in layer.vector_layer.getSelectedFeatures():
                 teryt = feature.attribute(layer.teryt_field)
@@ -51,11 +52,11 @@ class ParcelFinderDialog(QDialog):
         self.ui.voivodeshipComboBox.setEnabled(True)
         for feature in voivodeship.vector_layer.getFeatures():
             teryt = feature.attribute(voivodeship.teryt_field)
-            name = feature.attribute(voivodeship.teryt_field)
+            name = feature.attribute(voivodeship.name_field)
             self.ui.voivodeshipComboBox.addItem(f'{teryt}| {name}', teryt)
 
-        if self.ui.voivodeshipComboBox.count() > 0:
-            self.ui.voivodeshipComboBox.setCurrentIndex(0)
+        self.ui.voivodeshipComboBox.setCurrentIndex(0)
+        self.ui.voivodeshipComboBox.activated.emit(0)
 
     def _on_parcel_combobox_index_change(self):
         self._current_parcel_teryt = self.ui.parcelComboBox.currentData()
@@ -79,7 +80,8 @@ class ParcelFinderDialog(QDialog):
 
     def _search_parcel(self):
         parcel_layer = self._polish_administrative_layers.Parcel
-        parcel_layer.select_by_teryt(self._current_parcel_teryt)
+        expression = f'"{parcel_layer.teryt_field}" = \'{self._current_parcel_teryt}\''
+        parcel_layer.vector_layer.selectByExpression(expression)
         self.iface.mapCanvas().zoomToSelected(parcel_layer.vector_layer)
 
     # ------------ API ---------------
@@ -88,10 +90,10 @@ class ParcelFinderDialog(QDialog):
         self._polish_administrative_layers = polish_administrative_layers
         self._refresh_comboboxes(self.ui.voivodeshipComboBox)
 
-        self.ui.voivodeshipComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Voivodeship))
-        self.ui.countyComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.County))
-        self.ui.communeComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Commune))
-        self.ui.regionComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Region))
+        self.ui.voivodeshipComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.County))
+        self.ui.countyComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Commune))
+        self.ui.communeComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Region))
+        self.ui.regionComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Parcel))
 
         self.layers_loaded.emit()
 
