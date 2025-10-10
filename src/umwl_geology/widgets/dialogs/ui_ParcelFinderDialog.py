@@ -97,7 +97,6 @@ class Ui_ParcelFinderDialog:
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.parcelZoomButton = QtWidgets.QPushButton(self.frame)
-        self.parcelZoomButton.setEnabled(False)
         self.parcelZoomButton.setObjectName("parcelZoomButton")
         self.horizontalLayout.addWidget(self.parcelZoomButton)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
