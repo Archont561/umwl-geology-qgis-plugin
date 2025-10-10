@@ -1,2 +1,2 @@
-from QGISLayerPicker import QGISLayerPickerDialog
-from ParcelFinderDialog import ParcelFinderDialog
+from .QGISLayerPicker import QGISLayerPickerDialog
+from .ParcelFinderDialog import ParcelFinderDialog
