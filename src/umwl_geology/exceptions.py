@@ -4,7 +4,7 @@ from qgis.core import QgsVectorLayer
 class QGISPluginError(Exception):
     ...
 
-class QGISEditingError(Exception):
+class QGISEditingError(QGISPluginError):
     """
     Custom exception for vector layer editing failures.
     Stores the layer and formatted commit errors.
