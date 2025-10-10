@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List, Optional
 
 from qgis.gui import QgisInterface
-from PyQt5.QtWidgets import QDialog, QComboBox
+from PyQt5.QtWidgets import QDialog, QComboBox, QMessageBox
 from PyQt5.QtCore import pyqtSignal
 
 from ...constants import PolishAdministrativeLayers, AdministrativeLayer
@@ -27,8 +27,6 @@ class ParcelFinderDialog(QDialog):
         self.ui.communeComboBox.set_child(self.ui.regionComboBox)
         self.ui.regionComboBox.set_child(self.ui.parcelComboBox)
 
-
-        self.ui.parcelComboBox.currentIndexChanged.connect(self._enable_zoom_button)
         self.ui.parcelZoomButton.clicked.connect(self._search_parcel)
         self.layers_loaded.connect(self._on_layers_loaded)
 
@@ -56,32 +54,28 @@ class ParcelFinderDialog(QDialog):
             self.ui.voivodeshipComboBox.addItem(f'{teryt}| {name}', teryt)
 
         self.ui.voivodeshipComboBox.setCurrentIndex(0)
-        self.ui.voivodeshipComboBox.activated.emit(0)
-
-    def _on_parcel_combobox_index_change(self):
-        self._current_parcel_teryt = self.ui.parcelComboBox.currentData()
-        self._enable_zoom_button()
 
     def _refresh_comboboxes(self, combobox: QComboBox):
-        self._disable_zoom_button()
         current_combobox = combobox
         while current_combobox:
             current_combobox.clear()
             current_combobox.setDisabled(True)
             current_combobox = getattr(current_combobox, "child_combobox", None)
 
-    def _enable_zoom_button(self):
-        if not self.ui.parcelZoomButton.isEnabled():
-            self.ui.parcelZoomButton.setEnabled(True)
-
-    def _disable_zoom_button(self):
-        if self.ui.parcelZoomButton.isEnabled():
-            self.ui.parcelZoomButton.setEnabled(False)
-
     def _search_parcel(self):
+        teryt = self.get_parcel_teryt()
+        if not teryt:
+            QMessageBox.critical(self, "Error", "Please select parcel teryt!")
+            return
+
         parcel_layer = self._polish_administrative_layers.Parcel
-        expression = f'"{parcel_layer.teryt_field}" = \'{self._current_parcel_teryt}\''
+        expression = f'"{parcel_layer.teryt_field}" = \'{teryt}\''
         parcel_layer.vector_layer.selectByExpression(expression)
+
+        if parcel_layer.vector_layer.selectedFeatureCount() == 0:
+            QMessageBox.critical(self, "Error", "No parcel found!")
+            return
+
         self.iface.mapCanvas().zoomToSelected(parcel_layer.vector_layer)
 
     # ------------ API ---------------
@@ -98,7 +92,7 @@ class ParcelFinderDialog(QDialog):
         self.layers_loaded.emit()
 
     def get_parcel_teryt(self):
-        return self._current_parcel_teryt
+        return self.ui.parcelComboBox.currentData()
 
     def are_administrative_layers_loaded(self) -> bool:
         return self._polish_administrative_layers is not None
