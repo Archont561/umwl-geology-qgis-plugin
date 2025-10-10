@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List, Optional
 
+from qgis.gui import QgisInterface
 from PyQt5.QtWidgets import QDialog, QComboBox
 from PyQt5.QtCore import pyqtSignal
 
@@ -13,10 +14,11 @@ class ParcelFinderDialog(QDialog):
 
     layers_loaded = pyqtSignal(name="layers_loaded")
 
-    def __init__(self, *, parent=None):
+    def __init__(self, *, parent=None, iface: QgisInterface):
         super().__init__(parent)
         self.ui = Ui_ParcelFinderDialog()
         self.ui.setupUi(self)
+        self.iface = iface
         self._current_parcel_teryt: Optional[str]= None
         self._polish_administrative_layers: Optional[PolishAdministrativeLayers] = None
 
@@ -25,10 +27,6 @@ class ParcelFinderDialog(QDialog):
         self.ui.communeComboBox.set_child(self.ui.regionComboBox)
         self.ui.regionComboBox.set_child(self.ui.parcelComboBox)
 
-        self.ui.voivodeshipComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Voivodeship))
-        self.ui.countyComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.County))
-        self.ui.communeComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Commune))
-        self.ui.regionComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Region))
 
         self.ui.parcelComboBox.currentIndexChanged.connect(self._enable_zoom_button)
         self.ui.parcelZoomButton.clicked.connect(self._search_parcel)
@@ -79,24 +77,31 @@ class ParcelFinderDialog(QDialog):
     def _search_parcel(self):
         parcel_layer = self._polish_administrative_layers.Parcel
         parcel_layer.select_by_teryt(self._current_parcel_teryt)
-        # iface.mapCanvas().zoomToSelected(parcel_layer.vector_layer)
+        self.iface.mapCanvas().zoomToSelected(parcel_layer.vector_layer)
 
     # ------------ API ---------------
 
     def load_admin_layers(self, polish_administrative_layers: PolishAdministrativeLayers):
         self._polish_administrative_layers = polish_administrative_layers
         self._refresh_comboboxes(self.ui.voivodeshipComboBox)
+
+        self.ui.voivodeshipComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Voivodeship))
+        self.ui.countyComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.County))
+        self.ui.communeComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Commune))
+        self.ui.regionComboBox.define_itemset_loader(self._itemset_loader_factory(self._polish_administrative_layers.Region))
+
         self.layers_loaded.emit()
 
     def get_parcel_teryt(self):
         return self._current_parcel_teryt
 
-
-def main():
-    dialog = ParcelFinderDialog()
-    dialog.exec_()
+    def are_administrative_layers_loaded(self) -> bool:
+        return self._polish_administrative_layers is not None
 
 
 if __name__ == '__main__':
-    from ...utils.miscallenous import run_in_project
-    run_in_project(main)
+    from ...utils.miscallenous import QGISEnvironment
+
+    with QGISEnvironment():
+        dialog = ParcelFinderDialog()
+        dialog.exec_()
