@@ -1,23 +1,31 @@
-from typing import Optional, List
-
-from qgis.core import QgsProcessingProvider, QgsProcessingAlgorithm
+from qgis.core import QgsProcessingProvider
 from PyQt5.QtGui import QIcon
 
 
 class ProcessingProvider(QgsProcessingProvider):
-    ALGORITHMS: List[QgsProcessingAlgorithm] = []
-    ID: Optional[str] = None
-    NAME: Optional[str] = None
-    ICON: Optional[QIcon] = None
+    UNIQUE_PROVIDER_CONFIGURATION = {
+        "ALGORITHMS": [],
+        "ID": None,
+        "NAME": None,
+        "ICON": None,
+    }
 
     def loadAlgorithms(self):
-        for algorithm in self.__class__.ALGORITHMS: self.addAlgorithm(algorithm)
+        for algorithm in self.UNIQUE_PROVIDER_CONFIGURATION["ALGORITHMS"]: self.addAlgorithm(algorithm)
 
     def id(self) -> str:
-        return self.__class__.__name__.ID or self.__class__.NAME.lower().replace(' ', '_')
+        unique_id =  self.UNIQUE_PROVIDER_CONFIGURATION.get("ID", None)
+        if unique_id:
+            return unique_id
+
+        unique_id = self.UNIQUE_PROVIDER_CONFIGURATION.get("NAME", None)
+        if unique_id:
+            return unique_id.lower().replace(' ', '_')
+
+        return "unknown_provider"
 
     def name(self) -> str:
-        return self.tr(self.__class__.NAME)
+        return self.tr(self.UNIQUE_PROVIDER_CONFIGURATION.get("NAME", "Unknown Provider"))
 
     def icon(self) -> QIcon:
-        return self.__class__.ICON or QgsProcessingProvider.icon(self)
+        return self.UNIQUE_PROVIDER_CONFIGURATION["ICON"] or QgsProcessingProvider.icon(self)
